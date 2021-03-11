@@ -1,0 +1,59 @@
+﻿@model Academy.ViewModels.AddNews
+@{
+    ViewBag.Title = "AddNewsInCategory";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<div class="container">
+    <br />
+    <h2>Add News</h2>
+    <br />
+    @using (Html.BeginForm("Create", "News", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.CategoryId)
+        @Html.ValidationSummary(false, null, new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Title, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Subtitle, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Subtitle, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Subtitle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Status", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.Status, ViewBag.Status as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.Label("Zgjidh nje foto", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="file" class="file-input" name="file" id="file" /> <br />
+                <input type="submit" class="btn btn-primary" value="Ruaj">
+            </div>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,115 @@
+﻿@model Academy.ViewModels.AddComment
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var News = ViewBag.News as Academy.ViewModels.AddNews;
+    var allComments = ViewBag.Comments as IEnumerable<Academy.DomainModels.Comment>;
+}
+<br />
+
+<div class="container">
+    <div class="col-md-12">
+        <h1 class="text-center text-uppercase">
+            @News.Title &nbsp;&nbsp;&nbsp;
+            @if (User.IsInRole("Admin") || @News.UserId == ViewBag.User)
+            {
+                <a href="@Url.Action("Edit", "News", new { id = @News.Id })" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Modifiko lajmin">
+                    <span>
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </span>
+                </a>
+            }
+        </h1>
+        <h3>@News.Subtitle</h3>
+        <img src="@NewsPath.NewsPhotoPath@System.Uri.EscapeUriString(@News.Filename)" alt="News" style="width:1000px;height:600px" /><br /><br />
+        <h5 class="well well-sm">@News.Description</h5>
+    </div>
+
+    @if (@allComments == null)
+    {
+        <p class="text-danger">Asnje koment ne kete lajm</p>
+    }
+    else
+    {
+        <div class="container">
+            <button type="button" class="btn btn-primary">Shfaq komentet</button>
+            <div class="collapse" id="demo">
+                <table class="table table-bordered">
+                    @foreach (var item in allComments)
+                    {
+                        <tr>
+                            <td>
+                                <span style="font-size:20px; font-weight:bold">
+                                    @item.FullName
+                                </span>
+                                <span style="margin-left:10px">
+                                    @item.Description
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+        </div>
+
+    }
+
+
+    @using (Html.BeginForm("PostComment", "News", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.NewsId)
+        @Html.ValidationSummary(false, null, new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.FullName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" }) <br />
+                <input type="submit" value="Komento" class="btn btn-primary" style="margin-bottom:15px" />
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("button").click(function () {
+            $("#demo").toggle();
+        });
+    });
+</script>

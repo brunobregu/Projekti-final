@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Academy.DomainModels.News>
+@{
+    ViewBag.Title = "DraftNews";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<br />
+<h2>Draft News</h2>
+
+@if (Model.Count() == 0)
+{
+    <h5 class="text-danger">Aktualisht nuk ndodhet asnje lajm draft</h5>
+}
+else
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Title</th>
+            <th>Subtitle</th>
+            <th>Description</th>
+            <th>Created On</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Subtitle</td>
+                <td>@item.Description</td>
+                <td>@item.CreatedOn</td>
+                <td>
+                    @if (User.IsInRole("Admin") || @item.UserId == ViewBag.User)
+                    {
+                        <a href="@Url.Action("Edit", "News", new { id = item.Id })" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Modifiko lajmin">
+                            <span>
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </span>
+                        </a>
+                    }
+                </td>
+
+            </tr>
+        }
+    </table>
+}
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+
+    });
+</script>
+

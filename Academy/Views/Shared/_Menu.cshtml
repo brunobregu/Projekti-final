@@ -1,0 +1,13 @@
+﻿
+
+
+<div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        @foreach (var item in ViewBag.Category)
+        {
+            <li>
+                <a href="@Url.Action("Index","News", new { id=item.Id})">@item.Name</a>
+            </li>
+        }
+    </ul>
+</div>

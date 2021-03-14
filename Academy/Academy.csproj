@@ -188,9 +188,11 @@
     <Compile Include="ViewModels\AddComment.cs" />
     <Compile Include="ViewModels\AddNews.cs" />
     <Compile Include="ViewModels\AllComments.cs" />
+    <Compile Include="ViewModels\ChangePasswordVM.cs" />
     <Compile Include="ViewModels\EditUserVM.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
     <Compile Include="ViewModels\RegisterVM.cs" />
+    <Compile Include="ViewModels\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -242,6 +244,8 @@
     <Content Include="Views\News\DraftNews.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\Details.cshtml" />
+    <Content Include="Views\Account\UserProfile.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -11,7 +11,7 @@ namespace Academy.Repository
 {
     public class NewsRepository : INewsRepository
     {
-        ProjectDbContext db;
+        readonly ProjectDbContext db;
         public NewsRepository()
         {
             this.db = new ProjectDbContext();

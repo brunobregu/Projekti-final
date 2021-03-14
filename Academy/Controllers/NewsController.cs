@@ -78,10 +78,11 @@ namespace Academy.Controllers
         [Authorize]
         public ActionResult Create(int id)
         {
-            var userId = User.Identity.GetUserId();
-            List<SelectListItem> listItems = new List<SelectListItem>();
-            listItems.Add(new SelectListItem { Text = "Draft", Value = "Draft" });
-            listItems.Add(new SelectListItem { Text = "Published", Value = "Published" });
+            List<SelectListItem> listItems = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Draft", Value = "Draft" },
+                new SelectListItem { Text = "Published", Value = "Published" }
+            };
             ViewBag.Status = new SelectList(listItems, "Text", "Value");
             var category = categoryService.GetCategoryById(id);
             if (category == null)
@@ -101,17 +102,26 @@ namespace Academy.Controllers
         public ActionResult Create(HttpPostedFileBase file, AddNews model)
         {
             var userId = User.Identity.GetUserId();
+            List<SelectListItem> listItems = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Draft", Value = "Draft" },
+                new SelectListItem { Text = "Published", Value = "Published" }
+            };
             if (file != null)
             {
                 string error = ValidateFile(file);
                 if (!string.IsNullOrEmpty(error))
                 {
                     this.AddNotification(error, NotificationType.WARNING);
+                    ViewBag.Status = new SelectList(listItems, "Text", "Value");
+                    return View(model);
                 }
             }
             else
             {
                 this.AddNotification("Zgjidhni nje foto .", NotificationType.ERROR);
+                ViewBag.Status = new SelectList(listItems, "Text", "Value");
+                return View(model);
             }
             if (ModelState.IsValid)
             {
@@ -142,12 +152,10 @@ namespace Academy.Controllers
                 else
                 {
                     this.AddNotification("Nje lajm me te njejtin titull tashme egziston. Ju lutem zgjidhni nje titull te ri per lajmin .", NotificationType.INFO);
+                    ViewBag.Status = new SelectList(listItems, "Text", "Value");
                     return View(model);
                 }
             }
-            List<SelectListItem> listItems = new List<SelectListItem>();
-            listItems.Add(new SelectListItem { Text = "Draft", Value = "Draft" });
-            listItems.Add(new SelectListItem { Text = "Published", Value = "Published" });
             ViewBag.Status = new SelectList(listItems, "Text", "Value");
             return View(model);
         }
@@ -187,10 +195,12 @@ namespace Academy.Controllers
                 Description = news.Description,
                 CategoryId = categoryId
             };
-            List<SelectListItem> listItems = new List<SelectListItem>();
-            listItems.Add(new SelectListItem { Text = "Draft", Value = "Draft" });
-            listItems.Add(new SelectListItem { Text = "Published", Value = "Published" });
-            listItems.Add(new SelectListItem { Text = "Delete", Value = "Delete" });
+            List<SelectListItem> listItems = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Draft", Value = "Draft" },
+                new SelectListItem { Text = "Published", Value = "Published" },
+                new SelectListItem { Text = "Delete", Value = "Delete" }
+            };
             ViewBag.Status = new SelectList(listItems, "Text", "Value");
             return View(editNews);
         }
@@ -245,16 +255,18 @@ namespace Academy.Controllers
                     return RedirectToAction("Index", new { id = model.CategoryId });
                 }
             }
-            List<SelectListItem> listItems = new List<SelectListItem>();
-            listItems.Add(new SelectListItem { Text = "Draft", Value = "Draft" });
-            listItems.Add(new SelectListItem { Text = "Published", Value = "Published" });
-            listItems.Add(new SelectListItem { Text = "Delete", Value = "Delete" });
+            List<SelectListItem> listItems = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Draft", Value = "Draft" },
+                new SelectListItem { Text = "Published", Value = "Published" },
+                new SelectListItem { Text = "Delete", Value = "Delete" }
+            };
             ViewBag.Status = new SelectList(listItems, "Text", "Value");
             return View(model);
         }
 
 
-        [Authorize]
+        [AllowAnonymous]
         public ActionResult Details(int id)
         {
             var userId = User.Identity.GetUserId();
@@ -309,5 +321,8 @@ namespace Academy.Controllers
             return RedirectToAction("Details", new { id = model.NewsId });
             
         }
+
+
+        
     }
 }

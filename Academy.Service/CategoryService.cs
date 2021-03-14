@@ -11,7 +11,7 @@ namespace Academy.Service
 {
     public class CategoryService : ICategoryService
     {
-        ICategoryRepository repository;
+        readonly ICategoryRepository repository;
         public CategoryService(ICategoryRepository rep)
         {
             this.repository = rep;

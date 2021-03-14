@@ -12,9 +12,9 @@ namespace Academy.Repository
 {
     public class UserRepository : IUserRepository
     {
-        ProjectDbContext db;
-        ApplicationUserStore userStore;
-        ApplicationUserManager userManager;
+        readonly ProjectDbContext db;
+        readonly ApplicationUserStore userStore;
+        readonly ApplicationUserManager userManager;
         public UserRepository()
         {
             this.db = new ProjectDbContext();

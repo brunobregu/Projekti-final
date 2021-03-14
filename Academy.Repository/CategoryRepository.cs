@@ -11,7 +11,7 @@ namespace Academy.Repository
 {
     public class CategoryRepository : ICategoryRepository
     {
-        ProjectDbContext db;
+        readonly ProjectDbContext db;
         public CategoryRepository()
         {
             this.db = new ProjectDbContext();
@@ -64,7 +64,6 @@ namespace Academy.Repository
         public void DeleteCategory(int categoryId)
         {
             var currentCategory = db.Categories.FirstOrDefault(x => x.Id == categoryId);
-
             db.Categories.Remove(currentCategory);
             db.SaveChanges();
         }

@@ -11,7 +11,7 @@ namespace Academy.Service
 {
     public class UserSevice : IUserService
     {
-        IUserRepository repository;
+        readonly IUserRepository repository;
         public UserSevice(IUserRepository rep)
         {
             this.repository = rep;

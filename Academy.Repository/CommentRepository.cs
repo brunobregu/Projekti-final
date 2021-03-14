@@ -11,7 +11,7 @@ namespace Academy.Repository
 {
     public class CommentRepository : ICommentRepository
     {
-        ProjectDbContext db;
+        readonly ProjectDbContext db;
         public CommentRepository()
         {
             this.db = new ProjectDbContext();

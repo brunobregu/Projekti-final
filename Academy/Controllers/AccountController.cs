@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace Academy.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    
     public class AccountController : Controller
     {
         private readonly IUserService userService;
@@ -68,6 +68,7 @@ namespace Academy.Controllers
 
         }
 
+        
 
         [Authorize]
         public ActionResult Logout()
@@ -78,6 +79,7 @@ namespace Academy.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -115,14 +117,14 @@ namespace Academy.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(string id)
         {
-            if (id == null)
+            var user = userService.GetUserById(id);
+            if (id == null || user == null)
             {
                 return HttpNotFound();
             }
-            var user = userService.GetUserById(id);
             EditUserVM editUserVM = new EditUserVM()
             {
                 Id = user.Id,
@@ -165,22 +167,34 @@ namespace Academy.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         public ActionResult DisableUser(string id)
         {
+            if(id == null)
+            {
+                return HttpNotFound();
+            }
             userService.DisableUser(id);
             return RedirectToAction("AllEnableUser");
         }
 
 
 
+
+        [Authorize(Roles = "Admin")]
         public ActionResult EnableUser(string id)
         {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
             userService.EnableUser(id);
             return RedirectToAction("AllDisableUser");
         }
 
 
+
+        [Authorize(Roles = "Admin")]
         public ActionResult AllEnableUser()
         {
             var userId = User.Identity.GetUserId();
@@ -190,13 +204,75 @@ namespace Academy.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         public ActionResult AllDisableUser()
         {
             var userId = User.Identity.GetUserId();
             List<ApplicationUser> users = userService.GetAllDisableUsers(userId);
 
             return View(users);
+        }
+
+
+        [Authorize]
+        public ActionResult UserProfile()
+        {
+            string uid = User.Identity.GetUserId();
+            var user = userService.GetUserById(uid);
+            if(user == null)
+            {
+                return HttpNotFound();
+            }
+            User myProfile = new User()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Username = user.UserName
+            };
+            return View(myProfile);
+        }
+
+
+
+        [Authorize]
+        public ActionResult ChangePassword()
+        {
+            string userId = User.Identity.GetUserId();
+            ViewBag.UserId = userId;
+            return View();
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult ChangePassword(ChangePasswordVM obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var appDbContext = new ProjectDbContext();
+                var userStore = new ApplicationUserStore(appDbContext);
+                var userManager = new ApplicationUserManager(userStore);
+                string userId = User.Identity.GetUserId();
+                var currentUser = userService.GetUserById(userId);
+                var userIdentification = userManager.Find(currentUser.UserName, obj.OldPassword);
+                if (userIdentification == null)
+                {
+                    this.AddNotification("Passwordi i vjeter nuk eshte i sakte.", NotificationType.ERROR);
+                }
+                else
+                {
+                    IdentityResult result = userManager.ChangePassword(userId, obj.OldPassword, obj.NewPassword);
+                    if (result.Succeeded)
+                        this.AddNotification("Passwordi u ndryshua.", NotificationType.SUCCESS);
+                    else
+                        this.AddNotification("Passwordi nuk u ndryshua.", NotificationType.ERROR);
+                    return RedirectToAction("UserProfile");
+                }
+            }
+            return View();
         }
     }
 }

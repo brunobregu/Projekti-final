@@ -68,6 +68,10 @@ namespace Academy.Controllers
         public ActionResult Edit(int id)
         {
             var category = categoryService.GetCategoryById(id);
+            if(category == null)
+            {
+                return HttpNotFound();
+            }
             AddCategory editCategory = new AddCategory()
             {
                 Name = category.Name,

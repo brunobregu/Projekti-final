@@ -11,7 +11,7 @@ namespace Academy.Service
 {
     public class CommentService : ICommentService
     {
-        ICommentRepository repository;
+        readonly ICommentRepository repository;
         public CommentService(ICommentRepository rep)
         {
             this.repository = rep;

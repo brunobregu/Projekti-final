@@ -11,7 +11,7 @@ namespace Academy.Service
 {
     public class NewsService : INewsService
     {
-        INewsRepository repository;
+        readonly INewsRepository repository;
         public NewsService(INewsRepository rep)
         {
             this.repository = rep;

@@ -31,6 +31,9 @@ namespace Academy.ViewModels
 
         public string Filename { get; set; }
 
+
+        public string Tag { get; set; }
+
         public int CategoryId { get; set; }
 
 

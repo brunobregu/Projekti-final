@@ -32,6 +32,8 @@ namespace Academy.DomainModels
         [Required]
         public string Filename { get; set; }
 
+        public string Tag { get; set; }
+
 
         public DateTime CreatedOn { get; set; }
 

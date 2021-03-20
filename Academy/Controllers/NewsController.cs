@@ -142,7 +142,8 @@ namespace Academy.Controllers
                     Filename = Path.GetFileName(file.FileName),
                     CreatedOn = DateTime.Now,
                     CategoryId = model.CategoryId,
-                    UserId = userId
+                    UserId = userId, 
+                    Tag = model.Tag
                 };
                 if (newsService.CreateNews(newNews))
                 {
@@ -286,7 +287,8 @@ namespace Academy.Controllers
                 Subtitle = news.Subtitle,
                 Filename = news.Filename,
                 Description = news.Description,
-                UserId = news.UserId
+                UserId = news.UserId,
+                Tag = news.Tag
             };
             AddComment comment = new AddComment()
             {

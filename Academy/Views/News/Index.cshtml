@@ -49,6 +49,7 @@ else
                     <div class="caption">
                         <h3 class="text-center">@item.Subtitle</h3>
                     </div>
+
                 </div>
 
             </div>
@@ -61,19 +62,22 @@ else
 
 }
 
-    @if (Request.IsAuthenticated)
+@if (Request.IsAuthenticated)
+{
+    if (User.IsInRole("Admin"))
     {
-        if (User.IsInRole("Admin"))
-        {
-            <a href="@Url.Action("Edit","Category", new { id = ViewBag.CategoryId})" class="btn btn-warning">Modifiko kategori</a>
-        }
-
-        <a href="@Url.Action("DraftNews","News", new { id = ViewBag.CategoryId})" class="btn btn-primary">Draft News</a>
-        <a href="@Url.Action("Create","News", new { id = ViewBag.CategoryId})" class="btn btn-info">Shto lajme</a>
+        <a href="@Url.Action("Edit","Category", new { id = ViewBag.CategoryId})" class="btn btn-warning">Modifiko kategori</a>
     }
-  
+
+    <a href="@Url.Action("DraftNews","News", new { id = ViewBag.CategoryId})" class="btn btn-primary">Draft News</a>
+    <a href="@Url.Action("Create","News", new { id = ViewBag.CategoryId})" class="btn btn-info">Shto lajme</a>
+}
 
 
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
         $("#deleteCategory").click(function () {
